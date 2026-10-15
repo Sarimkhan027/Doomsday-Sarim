@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0a0c10">
+  <title>Doomsday — Squad up. Survive.</title>
+  <link rel="stylesheet" href="/theme.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+  <header class="absolute inset-x-0 top-0 z-20">
+    <nav class="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 sm:px-8" aria-label="Main navigation">
+      <a href="/" class="flex items-center gap-3" aria-label="Doomsday home">
+        <span class="flex h-10 w-10 items-center justify-center rounded-[var(--radius)] bg-[var(--color-primary)] text-xl font-black text-[var(--color-primary-contrast)]">D</span>
+        <span>
+          <span class="block font-[var(--font-heading)] text-lg font-black uppercase tracking-wide">Doomsday</span>
+          <span class="block text-[10px] font-bold uppercase tracking-[0.28em] text-[var(--color-muted)]">Launch by Sarim Khan</span>
+        </span>
+      </a>
+      <div class="hidden items-center gap-8 text-sm font-semibold text-[var(--color-muted)] md:flex">
+        <a class="transition hover:text-[var(--color-text)]" href="/">Home</a>
+        <a class="transition hover:text-[var(--color-text)]" href="/games">The game</a>
+        <a class="transition hover:text-[var(--color-text)]" href="/community">Squad & community</a>
+      </div>
+      <button type="button" data-open-login class="rounded-full bg-[var(--color-primary)] px-5 py-3 text-sm font-extrabold text-[var(--color-primary-contrast)] transition hover:brightness-110">Play now <span aria-hidden="true">↗</span></button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero-grid relative min-h-[760px] overflow-hidden border-b border-[var(--color-border)]">
+      <div class="absolute -right-24 top-36 h-96 w-96 rounded-full bg-[var(--color-primary)] opacity-20 blur-[8rem]"></div>
+      <div class="mx-auto grid min-h-[760px] max-w-7xl items-center gap-12 px-5 pb-16 pt-32 sm:px-8 lg:grid-cols-[1.05fr_.95fr]">
+        <div class="relative z-10 max-w-2xl">
+          <p class="mb-6 flex items-center gap-3 text-xs font-extrabold uppercase tracking-[0.28em] text-[var(--color-primary)]"><span class="pulse-dot h-2 w-2 rounded-full bg-[var(--color-primary)]"></span> Squad up. Survive the fall.</p>
+          <h1 class="font-[var(--font-heading)] text-6xl font-black uppercase leading-[.88] tracking-[-0.07em] sm:text-8xl lg:text-9xl">The world<br><span class="text-outline">fell.</span><br><span class="text-[var(--color-primary)]">You didn’t.</span></h1>
+          <p class="mt-8 max-w-xl text-lg leading-8 text-[var(--color-muted)]">Drop into a dangerous arena, team up with your squad, and fight to make it through. Your survival story starts here.</p>
+          <div class="mt-9 flex flex-wrap gap-4">
+            <button type="button" data-open-login class="rounded-full bg-[var(--color-primary)] px-7 py-4 font-extrabold text-[var(--color-primary-contrast)] transition hover:scale-105">Enter the arena <span class="ml-2">→</span></button>
+            <a href="#gameplay" class="rounded-full border border-[var(--color-border)] px-7 py-4 font-extrabold transition hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]">See how to play</a>
+          </div>
+          <p class="mt-5 text-xs text-[var(--color-muted)]">Browser arena demo · No download needed · Solo practice with squad bots</p>
+        </div>
+        <div class="relative mx-auto h-[25rem] w-full max-w-lg sm:h-[34rem]">
+          <div class="float-one absolute right-5 top-7 flex h-72 w-56 flex-col justify-between overflow-hidden rounded-[var(--radius)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-2xl sm:right-16 sm:h-96 sm:w-72">
+            <div class="flex items-center justify-between text-xs font-bold uppercase tracking-widest text-[var(--color-muted)]"><span>Survival zone</span><span class="text-[var(--color-primary)]">01</span></div>
+            <div class="relative flex flex-1 items-center justify-center">
+              <div class="absolute h-44 w-44 rounded-full border border-[var(--color-primary)] opacity-40"></div>
+              <div class="absolute h-32 w-32 rounded-full border border-[var(--color-primary)] opacity-60"></div>
+              <div class="absolute h-20 w-20 rounded-full bg-[var(--color-primary)] opacity-20 blur-2xl"></div>
+              <span class="relative text-8xl">☠</span>
+            </div>
+            <div>
+              <p class="text-xs uppercase tracking-widest text-[var(--color-muted)]">Mission</p>
+              <p class="mt-1 font-[var(--font-heading)] text-2xl font-black uppercase">Hold the line</p>
+            </div>
+          </div>
+          <div class="float-two absolute bottom-5 left-1 h-48 w-52 rounded-[var(--radius)] border border-[var(--color-primary)]/50 bg-[var(--color-bg-alt)] p-5 shadow-2xl sm:bottom-3 sm:left-5 sm:h-56 sm:w-64">
+            <div class="flex items-center gap-3"><span class="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-surface-raised)] text-xl">🛡️</span>
+              <div>
+                <p class="text-xs uppercase tracking-widest text-[var(--color-muted)]">Squad status</p>
+                <p class="font-bold text-[var(--color-success)]">4 ready to deploy</p>
+              </div>
+            </div>
+            <div class="mt-6 flex -space-x-2"><span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[var(--color-bg-alt)] bg-[var(--color-surface-raised)]">🧑‍🚀</span><span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[var(--color-bg-alt)] bg-[var(--color-surface-raised)]">🥷</span><span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[var(--color-bg-alt)] bg-[var(--color-surface-raised)]">🪖</span><span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[var(--color-bg-alt)] bg-[var(--color-primary)] text-sm font-black">YOU</span></div>
+            <p class="mt-4 text-xs text-[var(--color-muted)]">No one survives alone.</p>
+          </div>
+          <span class="absolute right-0 top-1/2 rounded-full bg-[var(--color-accent)] px-4 py-2 text-xs font-black uppercase tracking-widest text-[var(--color-bg)]">Fight together</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="gameplay" class="mx-auto max-w-7xl px-5 py-20 sm:px-8 lg:py-24">
+      <div class="mb-11 flex flex-wrap items-end justify-between gap-5">
+        <div>
+          <p class="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-[var(--color-primary)]">A world on the edge</p>
+          <h2 class="font-[var(--font-heading)] text-4xl font-black uppercase tracking-tight sm:text-5xl">Survive as a squad.</h2>
+        </div>
+        <a href="/games" class="text-sm font-bold text-[var(--color-muted)] transition hover:text-[var(--color-primary)]">Enter game briefing →</a>
+      </div>
+      <div class="grid gap-5 md:grid-cols-3">
+        <article class="card-lift rounded-[var(--radius)] border border-[var(--color-border)] bg-[var(--color-surface)] p-6"><span class="text-4xl">🎯</span>
+          <h3 class="mt-5 text-xl font-extrabold">Fight your way through</h3>
+          <p class="mt-3 text-sm leading-6 text-[var(--color-muted)]">Move, aim, and take down waves of hostile raiders in a fast browser arena.</p>
+        </article>
+        <article class="card-lift rounded-[var(--radius)] border border-[var(--color-border)] bg-[var(--color-surface)] p-6"><span class="text-4xl">🧑‍🤝‍🧑</span>
+          <h3 class="mt-5 text-xl font-extrabold">Squad makes the difference</h3>
+          <p class="mt-3 text-sm leading-6 text-[var(--color-muted)]">Your practice run includes friendly bot squadmates that help defend the zone.</p>
+        </article>
+        <article class="card-lift rounded-[var(--radius)] border border-[var(--color-border)] bg-[var(--color-surface)] p-6"><span class="text-4xl">🌐</span>
+          <h3 class="mt-5 text-xl font-extrabold">Share the drop</h3>
+          <p class="mt-3 text-sm leading-6 text-[var(--color-muted)]">Share this site with friends so they can open their own playable arena demo.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="border-y border-[var(--color-border)] bg-[var(--color-surface)]">
+      <div class="mx-auto grid max-w-7xl items-center gap-10 px-5 py-16 sm:px-8 md:grid-cols-[1fr_auto]">
+        <div>
+          <p class="text-sm font-bold uppercase tracking-[0.25em] text-[var(--color-primary)]">Your squad is waiting</p>
+          <h2 class="mt-3 font-[var(--font-heading)] text-3xl font-black uppercase sm:text-4xl">Ready for the drop?</h2>
+          <p class="mt-3 max-w-xl text-[var(--color-muted)]">Pick a sign-in option, set your callsign, and jump into the browser demo.</p>
+        </div>
+        <button type="button" data-open-login class="rounded-full bg-[var(--color-primary)] px-7 py-4 font-extrabold text-[var(--color-primary-contrast)]">Create your player name ↗</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="mx-auto flex max-w-7xl flex-col gap-4 px-5 py-8 text-sm text-[var(--color-muted)] sm:flex-row sm:items-center sm:justify-between sm:px-8">
+    <p>© 2025 Doomsday · Launch by <span class="font-bold text-[var(--color-text)]">Sarim Khan</span></p>
+    <div class="flex gap-5"><a class="hover:text-[var(--color-primary)]" href="/games">Game briefing</a><a class="hover:text-[var(--color-primary)]" href="/community">Squad hub</a><button type="button" data-share class="hover:text-[var(--color-primary)]">Share game</button></div>
+  </footer>
+
+  <section id="game-panel" hidden class="fixed inset-0 z-40 overflow-y-auto bg-[var(--color-bg)] p-4 sm:p-8">
+    <div class="mx-auto max-w-6xl">
+      <div class="mb-4 flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-[0.25em] text-[var(--color-primary)]">Doomsday · practice arena</p>
+          <h2 class="font-[var(--font-heading)] text-2xl font-black uppercase">Survive the zone</h2>
+        </div>
+        <div class="flex items-center gap-3"><span id="player-label" class="rounded-full border border-[var(--color-border)] px-4 py-2 text-sm font-bold">Player</span><button type="button" id="exit-game" class="rounded-full border border-[var(--color-border)] px-4 py-2 text-sm font-bold hover:border-[var(--color-primary)]">Exit</button></div>
+      </div>
+      <div class="grid gap-4 lg:grid-cols-[1fr_16rem]">
+        <div class="relative h-[58vh] min-h-80 overflow-hidden rounded-[var(--radius)] border border-[var(--color-border)] sm:h-[68vh]">
+          <canvas id="arena" class="arena-canvas" aria-label="Playable Doomsday arena"></canvas>
+          <div id="game-message" class="pointer-events-none absolute inset-x-4 top-4 rounded-[var(--radius)] border border-[var(--color-border)] bg-[var(--color-bg)]/85 p-3 text-center text-sm font-bold">WASD / arrow keys to move · Mouse or space to fire</div>
+        </div>
+        <aside class="rounded-[var(--radius)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
+          <p class="text-xs font-bold uppercase tracking-widest text-[var(--color-muted)]">Your status</p>
+          <div class="mt-4 flex justify-between"><span>Health</span><strong id="health-value" class="text-[var(--color-success)]">100%</strong></div>
+          <div class="mt-2 h-2 overflow-hidden rounded-full bg-[var(--color-bg)]">
+            <div id="health-bar" class="h-full w-full rounded-full bg-[var(--color-success)] transition-all"></div>
+          </div>
+          <div class="mt-5 flex justify-between"><span>Safe zone</span><strong id="zone-value" class="text-[var(--color-accent)]">01:30</strong></div>
+          <div class="mt-2 flex justify-between"><span>Eliminations</span><strong id="score-value">0</strong></div>
+          <div class="mt-2 flex justify-between"><span>Squad</span><strong class="text-[var(--color-accent)]">Solo practice</strong></div>
+          <label for="weapon-select" class="mt-5 block text-xs font-bold uppercase tracking-widest text-[var(--color-muted)]">Choose weapon</label>
+          <select id="weapon-select" class="mt-2 w-full rounded-full border border-[var(--color-border)] bg-[var(--color-bg)] px-4 py-3 text-sm font-bold text-[var(--color-text)] outline-none focus:border-[var(--color-primary)]">
+            <option value="awm">AWM · Sniper</option>
+            <option value="ump">UMP · SMG</option>
+            <option value="shotgun">Shotgun</option>
+            <option value="desert">Desert Eagle</option>
+            <option value="machine">Machine gun</option>
+          </select>
+          <button id="drive-button" type="button" class="mt-3 w-full rounded-full border border-[var(--color-accent)] px-5 py-3 font-extrabold text-[var(--color-accent)]">Enter nearby car</button>
+          <p class="mt-5 border-t border-[var(--color-border)] pt-5 text-sm leading-6 text-[var(--color-muted)]">Battle-arena practice demo: human-shaped AI opponents, a shrinking safe zone, weapon choices, headshot bonuses, and a drivable vehicle. Online multiplayer and real social sign-in are not connected.</p>
+          <button id="restart-game" type="button" class="mt-5 w-full rounded-full bg-[var(--color-primary)] px-5 py-3 font-extrabold text-[var(--color-primary-contrast)]">Restart run</button>
+        </aside>
+      </div>
+      <div class="mt-4 grid grid-cols-3 gap-3 sm:hidden"><button data-move="up" class="rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] p-3 font-bold">↑</button><button data-move="left" class="rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] p-3 font-bold">←</button><button data-move="right" class="rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] p-3 font-bold">→</button><button data-move="down" class="col-start-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] p-3 font-bold">↓</button><button data-move="fire" class="col-span-3 rounded-full bg-[var(--color-primary)] p-3 font-extrabold text-[var(--color-primary-contrast)]">FIRE</button></div>
+    </div>
+  </section>
+
+  <div id="login-modal" class="modal-backdrop" hidden>
+    <div class="modal-card relative" role="dialog" aria-modal="true" aria-labelledby="login-title">
+      <button type="button" data-close-login class="absolute right-5 top-4 text-2xl text-[var(--color-muted)] hover:text-[var(--color-text)]" aria-label="Close">×</button>
+      <p class="text-xs font-bold uppercase tracking-[0.25em] text-[var(--color-primary)]">Join the fight</p>
+      <h2 id="login-title" class="mt-2 font-[var(--font-heading)] text-3xl font-black uppercase">Choose your login</h2>
+      <p class="mt-3 text-sm leading-6 text-[var(--color-muted)]">Select a provider for this demo, then choose your in-game username.</p>
+      <div class="mt-6 grid gap-3">
+        <button class="social-button" type="button" data-provider="Facebook"><span aria-hidden="true">f</span> Continue with Facebook</button>
+        <button class="social-button" type="button" data-provider="Google"><span aria-hidden="true">G</span> Continue with Google</button>
+        <button class="social-button" type="button" data-provider="Twitter"><span aria-hidden="true">𝕏</span> Continue with Twitter</button>
+      </div>
+      <form id="username-form" class="mt-6 border-t border-[var(--color-border)] pt-5">
+        <label for="username" class="block text-sm font-bold">Choose your username</label>
+        <div class="mt-2 flex gap-2"><input id="username" name="username" maxlength="18" minlength="2" required placeholder="Your squad callsign" class="min-w-0 flex-1 rounded-full border border-[var(--color-border)] bg-[var(--color-bg)] px-4 py-3 text-[var(--color-text)] outline-none focus:border-[var(--color-primary)]"><button class="rounded-full bg-[var(--color-primary)] px-5 py-3 font-extrabold text-[var(--color-primary-contrast)]" type="submit">Start</button></div>
+        <p id="provider-note" class="mt-3 text-xs leading-5 text-[var(--color-muted)]">Demo sign-in only: buttons do not contact Facebook, Google, or Twitter. Real account login requires secure OAuth credentials and a server.</p>
+      </form>
+    </div>
+  </div>
+
+  <script src="/game.js"></script>
+</body>
+
+</html>
