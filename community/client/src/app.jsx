@@ -93,10 +93,24 @@ function GameArena({ mode, socket, room, onStatus }) {
   const [weapon, setWeapon] = useState('awm');
   const [stats, setStats] = useState({ health: 100, score: 0, elapsed: 0, vehicle: false });
   const [notice, setNotice] = useState('WASD / arrows to move · Mouse or Space to fire');
+  const [isDead, setIsDead] = useState(false);
+  const [runKey, setRunKey] = useState(0);
   const roomRef = useRef(room);
+  const deathTimerRef = useRef(null);
   useEffect(() => { roomRef.current = room; }, [room]);
   const vehicleRef = useRef(false);
   const weaponRef = useRef(weapon);
+  const restartRun = () => {
+    if (deathTimerRef.current) {
+      clearTimeout(deathTimerRef.current);
+      deathTimerRef.current = null;
+    }
+    setIsDead(false);
+    setNotice('WASD / arrows to move · Mouse or Space to fire');
+    setStats({ health: 100, score: 0, elapsed: 0, vehicle: false });
+    setRunKey((current) => current + 1);
+    vehicleRef.current = false;
+  };
   useEffect(() => { weaponRef.current = weapon; if (socket) socket.emit('player:weapon', weapon); }, [weapon, socket]);
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -146,7 +160,17 @@ function GameArena({ mode, socket, room, onStatus }) {
         bullets.forEach((bullet) => { const enemy = bullet.target; if (!enemies.includes(enemy)) { bullet.life = 0; return; } const dx = enemy.x - bullet.x; const dy = enemy.y - bullet.y; const d = Math.hypot(dx,dy)||1; const step = 600*dt; bullet.x += dx/d*step; bullet.y += dy/d*step; bullet.life -= dt; if (d < step + 12) { const headshot = Math.random() > .55; enemy.hp -= bullet.damage * (headshot ? 1.6 : 1); bullet.life = 0; if (headshot) setNotice('HEADSHOT — target down!'); if (enemy.hp <= 0) { enemies = enemies.filter((item) => item !== enemy); score += 1; } } });
         bullets = bullets.filter((bullet) => bullet.life > 0);
         const shrink = Math.min(1, elapsed / 160); const zone = Math.min(width,height) * (.43 - shrink*.28); const outside = Math.hypot(player.x-width/2,player.y-height/2) > zone; if (outside) player.hp = Math.max(0, player.hp - 6*dt);
-        if (player.hp <= 0) setNotice('RUN OVER — restart the page to try again.');
+        if (player.hp <= 0) {
+          player.hp = 0;
+          setIsDead(true);
+          setNotice('YOU DIED — restarting the run...');
+          setStats({ health: 0, score, elapsed: Math.floor(elapsed), vehicle: vehicleRef.current });
+          if (deathTimerRef.current) clearTimeout(deathTimerRef.current);
+          deathTimerRef.current = window.setTimeout(() => {
+            restartRun();
+          }, 1400);
+          return;
+        }
         if (Math.floor(elapsed) !== Math.floor(elapsed-dt)) setStats({ health: Math.ceil(player.hp), score, elapsed: Math.floor(elapsed), vehicle: vehicleRef.current });
         ctx.fillStyle = '#11191b'; ctx.fillRect(0,0,width,height); ctx.strokeStyle = 'rgba(225,238,226,.07)'; ctx.lineWidth = 1;
         for (let x=0;x<width;x+=38) { ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,height);ctx.stroke(); } for (let y=0;y<height;y+=38) {ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(width,y);ctx.stroke();}
@@ -173,10 +197,16 @@ function GameArena({ mode, socket, room, onStatus }) {
       frameId = requestAnimationFrame(animate);
     }
     frameId = requestAnimationFrame(animate);
-    return () => { cancelAnimationFrame(frameId); window.removeEventListener('keydown',keyDown);window.removeEventListener('keyup',keyUp);window.removeEventListener('resize',scale);canvas.removeEventListener('pointermove',pointerMove);canvas.removeEventListener('pointerdown',pointerDown);window.removeEventListener('pointerup',pointerUp); };
-  }, [mode, socket]);
+    return () => {
+      if (deathTimerRef.current) {
+        clearTimeout(deathTimerRef.current);
+        deathTimerRef.current = null;
+      }
+      cancelAnimationFrame(frameId); window.removeEventListener('keydown',keyDown);window.removeEventListener('keyup',keyUp);window.removeEventListener('resize',scale);canvas.removeEventListener('pointermove',pointerMove);canvas.removeEventListener('pointerdown',pointerDown);window.removeEventListener('pointerup',pointerUp);
+    };
+  }, [mode, socket, runKey]);
   return <div className="arena-shell"><div className="arena-canvas-wrap"><canvas ref={canvasRef} className="arena-canvas" aria-label="Playable tactical arena" /><div className="arena-notice">{notice}</div><div className="canvas-compass">N <span>·</span> TRAINING ISLAND</div></div>
-    <aside className="game-hud"><div className="hud-top"><span className="eyebrow">{mode === 'online' ? 'LIVE MATCH' : 'SOLO PRACTICE'}</span><span className="live-pill"><i />{mode === 'online' ? 'CONNECTED' : 'LOCAL'}</span></div><div className="hud-stat"><span>HEALTH</span><b>{stats.health}%</b></div><div className="health-track"><i style={{ width: `${stats.health}%` }} /></div><div className="hud-grid">        <div><small>ELIMS</small><b>{stats.score}</b></div><div><small>ZONE CLOSES</small><b>{String(Math.floor(Math.max(0,160-stats.elapsed)/60)).padStart(2,'0')}:{String(Math.max(0,160-stats.elapsed)%60).padStart(2,'0')}</b></div></div><label className="field-label" htmlFor="weapon">WEAPON LOADOUT</label><select id="weapon" value={weapon} onChange={(event)=>setWeapon(event.target.value)}>{weapons.map((item)=><option key={item.id} value={item.id}>{item.name} · {item.kind}</option>)}</select><div className="weapon-description">{weapons.find((item)=>item.id===weapon)?.damage} <span> · 1 of 5 loadouts</span></div><button className={stats.vehicle?'button button-primary button-full':'button button-outline button-full'} onClick={()=>{vehicleRef.current=!vehicleRef.current;setStats((prev)=>({...prev,vehicle:vehicleRef.current}));setNotice(vehicleRef.current?'Vehicle engaged — drive with WASD / arrow keys':'On foot — stay inside the safe zone');}}>{stats.vehicle?'Exit vehicle':'Enter vehicle'}</button><div className="controls-note"><b>CONTROLS</b><span>W A S D <i>Move</i></span><span>Mouse <i>Aim & fire</i></span><span>Space <i>Auto-fire</i></span><span>Zone <i>Contracts over time</i></span></div>{mode==='online'&&<div className="room-info"><Users size={15}/>{room?.players?.length || 0} players in your room</div>}<p className="prototype-note">Prototype mode: gameplay is for demonstration. Online matches need the server connected and hosted.</p></aside></div>;
+    <aside className="game-hud"><div className="hud-top"><span className="eyebrow">{mode === 'online' ? 'LIVE MATCH' : 'SOLO PRACTICE'}</span><span className="live-pill"><i />{mode === 'online' ? 'CONNECTED' : 'LOCAL'}</span></div><div className="hud-stat"><span>HEALTH</span><b>{stats.health}%</b></div><div className="health-track"><i style={{ width: `${stats.health}%` }} /></div><div className="hud-grid">        <div><small>ELIMS</small><b>{stats.score}</b></div><div><small>ZONE CLOSES</small><b>{String(Math.floor(Math.max(0,160-stats.elapsed)/60)).padStart(2,'0')}:{String(Math.max(0,160-stats.elapsed)%60).padStart(2,'0')}</b></div></div><label className="field-label" htmlFor="weapon">WEAPON LOADOUT</label><select id="weapon" value={weapon} onChange={(event)=>setWeapon(event.target.value)}>{weapons.map((item)=><option key={item.id} value={item.id}>{item.name} · {item.kind}</option>)}</select><div className="weapon-description">{weapons.find((item)=>item.id===weapon)?.damage} <span> · 1 of 5 loadouts</span></div><button className={stats.vehicle?'button button-primary button-full':'button button-outline button-full'} onClick={()=>{vehicleRef.current=!vehicleRef.current;setStats((prev)=>({...prev,vehicle:vehicleRef.current}));setNotice(vehicleRef.current?'Vehicle engaged — drive with WASD / arrow keys':'On foot — stay inside the safe zone');}}>{stats.vehicle?'Exit vehicle':'Enter vehicle'}</button>{isDead && <button className="button button-primary button-full" onClick={restartRun}>Restart run</button>}<div className="controls-note"><b>CONTROLS</b><span>W A S D <i>Move</i></span><span>Mouse <i>Aim & fire</i></span><span>Space <i>Auto-fire</i></span><span>Zone <i>Contracts over time</i></span></div>{mode==='online'&&<div className="room-info"><Users size={15}/>{room?.players?.length || 0} players in your room</div>}<p className="prototype-note">Prototype mode: gameplay is for demonstration. Online matches need the server connected and hosted.</p></aside></div>;
 }
 
 function Arena() {
