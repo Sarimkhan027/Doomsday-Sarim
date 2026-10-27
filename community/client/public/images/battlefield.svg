@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" fill="none">
+  <defs>
+    <linearGradient id="sky" x1="800" y1="0" x2="800" y2="900" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#343331"/>
+      <stop offset=".44" stop-color="#292a28"/>
+      <stop offset="1" stop-color="#14191a"/>
+    </linearGradient>
+    <linearGradient id="horizon" x1="800" y1="330" x2="800" y2="790" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#81715d" stop-opacity=".16"/>
+      <stop offset=".55" stop-color="#252a28" stop-opacity=".62"/>
+      <stop offset="1" stop-color="#101415"/>
+    </linearGradient>
+    <radialGradient id="flare" cx="0" cy="0" r="1" gradientTransform="matrix(0 328 -622 0 1125 394)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#9a6547" stop-opacity=".31"/>
+      <stop offset="1" stop-color="#9a6547" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soften" x="-20%" y="-30%" width="140%" height="160%">
+      <feGaussianBlur stdDeviation="30"/>
+    </filter>
+  </defs>
+  <path fill="url(#sky)" d="M0 0h1600v900H0z"/>
+  <path fill="url(#flare)" d="M0 0h1600v900H0z"/>
+  <g fill="#9b9589" opacity=".17" filter="url(#soften)">
+    <ellipse cx="1065" cy="357" rx="395" ry="78"/>
+    <ellipse cx="1300" cy="432" rx="323" ry="66"/>
+    <ellipse cx="690" cy="422" rx="388" ry="55"/>
+  </g>
+  <path fill="#191e1e" d="m0 467 93-15 44 14 60-27 70 13 39-48 54 18 42-38 53 24 48-5 25 31 51-16 32 19 29-8 29 20 68-15 26 23 38-15 45 21 55-25 46 21 35-48 53 16 24-37 47 28 38-30 42 21 30-45 38 20 35-8 27 35 47-14 40 23 32-16 30 25 48-8 39 22 47-32 51 24 59-15 41 22v172H0z"/>
+  <path fill="#242725" d="M169 407h50v74h-50zm61-24h42v98h-42zm51 39h74v59h-74zm94-63h31v122h-31zm39 26h66v95h-66zm83-52h37v147h-37zm48 44h55v103h-55zm67 21h82v82h-82zm113-53h33v134h-33zm46 32h59v103h-59zm70-47h39v150h-39zm53 55h83v96h-83zm116-72h36v169h-36zm47 42h71v127h-71zm89 19h53v108h-53zm68-43h39v154h-39zm52 34h80v120h-80z"/>
+  <path fill="#343a36" d="m0 537 223-69 183 49 205-78 167 67 216-85 175 73 175-62 256 73v400H0z"/>
+  <path fill="url(#horizon)" d="M0 365h1600v535H0z"/>
+  <path fill="#171c1c" d="m0 728 241-108 168 41 188-100 195 121 142-61 157 47 162-114 347 134v212H0z"/>
+  <path stroke="#b48b60" stroke-opacity=".23" stroke-width="2" d="m0 728 241-108 168 41 188-100 195 121 142-61 157 47 162-114 347 134"/>
+  <g fill="#0c1012">
+    <path d="m972 846 74-144 72 144z"/>
+    <path d="M1013 745h68v101h-68z"/>
+    <path d="m1018 720 28-22 28 22v26h-56z"/>
+    <path d="m1096 846 54-109 55 109z"/>
+    <path d="M1127 767h49v79h-49z"/>
+    <path d="M337 846h179l-28-92-54-29-47 25z"/>
+    <path d="M391 735h43v111h-43z"/>
+    <path d="m401 695 10-34 11 34z"/>
+    <path d="m398 702-29 31h29v45h44v-45h-30z"/>
+  </g>
+  <g stroke="#c5a36d" stroke-opacity=".24">
+    <path d="M0 843h1600"/>
+    <path d="m0 864 452-21m1148 0-404 21"/>
+    <path d="M800 710v190"/>
+  </g>
+  <path fill="#090b0d" fill-opacity=".26" d="M0 0h1600v900H0z"/>
+</svg>

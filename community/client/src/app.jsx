@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, Route, Routes, useNavigate } from 'react-router-dom';
-import { Activity, ArrowDown, ArrowRight, Crosshair, Gamepad2, Heart, LogOut, Map, Menu, Shield, Users, X, Zap } from 'lucide-react';
+import { Activity, ArrowDown, ArrowRight, Crosshair, Gamepad2, LogOut, Map, Menu, Shield, Users, X, Zap } from 'lucide-react';
 import { io } from 'socket.io-client';
 import { useAuth } from './context/authcontext.jsx';
 import { apiRequest } from "./context/services/api.js";
@@ -17,43 +17,44 @@ function Header() {
   const { user, logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   return <header className="site-header">
-    <Link className="brand" to="/"><span className="brand-mark">D</span><span>DOOMSDAY<small>Squad survival project</small></span></Link>
-    <button className="icon-button mobile-menu" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle navigation">{menuOpen ? <X /> : <Menu />}</button>
-    <nav className={menuOpen ? 'main-nav open' : 'main-nav'}>
+    <Link className="brand" to="/"><span className="brand-mark">D</span><span>DOOMSDAY<small>Survive the collapse</small></span></Link>
+    <button className="icon-button mobile-menu" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle navigation" aria-expanded={menuOpen} aria-controls="primary-navigation">{menuOpen ? <X /> : <Menu />}</button>
+    <nav id="primary-navigation" aria-label="Primary navigation" className={menuOpen ? 'main-nav open' : 'main-nav'}>
       <NavLink to="/" onClick={() => setMenuOpen(false)}>Overview</NavLink>
       <NavLink to="/arena" onClick={() => setMenuOpen(false)}>Arena</NavLink>
-      <a href="/#features" onClick={() => setMenuOpen(false)}>Features</a>
-      {user ? <><span className="nav-player"><span className="online-dot" />{user.username}</span><button className="nav-logout" onClick={logout}><LogOut size={15} /> Sign out</button></> : <Link className="nav-cta" to="/account">Player account <ArrowRight size={15} /></Link>}
+      <Link to="/#features" onClick={() => setMenuOpen(false)}>Intel</Link>
+      {user ? <><span className="nav-player"><span className="online-dot" />{user.username}</span><button className="nav-logout" onClick={() => { logout(); setMenuOpen(false); }}><LogOut size={15} /> Sign out</button></> : <Link className="nav-cta" to="/account" onClick={() => setMenuOpen(false)}>Player account <ArrowRight size={15} /></Link>}
     </nav>
   </header>;
 }
 
 function Home() {
+  const { user } = useAuth();
   return <>
     <section className="hero wrap">
       <div className="hero-copy">
-        <div className="eyebrow"><span className="online-dot pulse" /> MULTIPLAYER ARENA · PROJECT BUILD</div>
-        <h1>Drop in.<br /><span>Stay alive.</span></h1>
-        <p className="hero-lede">A squad-survival arena prototype with weapon loadouts, moving safe zones, vehicles, and an online multiplayer foundation.</p>
-        <div className="hero-actions"><Link to="/arena" className="button button-primary"><Gamepad2 size={18} /> Enter the arena</Link><a href="#features" className="button button-quiet">Explore features <ArrowDown size={16} /></a></div>
-        <div className="hero-proof"><span><Shield size={15} /> Local practice mode</span><span><Users size={15} /> Online room foundation</span></div>
+        <div className="eyebrow"><span className="online-dot pulse" /> TRAINING ISLAND · SURVIVAL PROTOCOL</div>
+        <h1>Survive the<br /><span>collapse.</span></h1>
+        <p className="hero-lede">The world went dark. Gear up, hold the zone, and outlast the threat in a tactical survival arena built for the last squad standing.</p>
+        <div className="hero-actions"><Link to="/arena" className="button button-primary"><Gamepad2 size={18} /> Enter arena</Link><Link to="/account" className="button button-quiet"><Shield size={16} /> Player account</Link></div>
+        <div className="hero-proof"><span><Shield size={15} /> Solo practice · no account needed</span><span><Users size={15} /> {user ? `Signed in · ${user.username}` : 'Online queue · sign-in required'}</span></div>
       </div>
-      <div className="hero-art" aria-label="Tactical map illustration">
-        <div className="map-card"><div className="map-top"><span><Map size={15} /> TRAINING ISLAND</span><span className="map-live"><i /> SAFE ZONE</span></div><div className="map-scene"><div className="map-zone zone-outer" /><div className="map-zone zone-inner" /><span className="map-road road-one" /><span className="map-road road-two" /><span className="map-building building-one" /><span className="map-building building-two" /><span className="map-building building-three" /><span className="map-player player-one">▲</span><span className="map-player player-two">▲</span><span className="map-car">▰</span><span className="map-label label-a">NORTH RIDGE</span><span className="map-label label-b">OLD TOWN</span></div><div className="map-bottom"><span><b>04:32</b><small>ZONE CLOSES IN</small></span><span><b>04 / 08</b><small>PLAYERS IN ROOM</small></span><span><b>1.2 KM</b><small>SAFE AREA</small></span></div></div>
-        <div className="floating-tag tag-weapon"><span className="tag-icon">⌖</span><span><b>AWM loadout</b><small>Precision ready</small></span></div><div className="floating-tag tag-squad"><span className="squad-avatars"><i>R</i><i>K</i><i>+</i></span><span><b>Squad status</b><small>Fireteam assembled</small></span></div>
+      <div className="hero-art" aria-hidden="true">
+        <div className="map-card"><div className="map-top"><span><Map size={15} /> TRAINING ISLAND</span><span className="map-live"><i /> FIELD MAP</span></div><div className="map-scene"><div className="map-zone zone-outer" /><div className="map-zone zone-inner" /><span className="map-road road-one" /><span className="map-road road-two" /><span className="map-building building-one" /><span className="map-building building-two" /><span className="map-building building-three" /><span className="map-player player-one">▲</span><span className="map-player player-two">▲</span><span className="map-car">▰</span><span className="map-label label-a">NORTH RIDGE</span><span className="map-label label-b">OLD TOWN</span></div><div className="map-bottom"><span><b>SOLO</b><small>PRACTICE MODE</small></span><span><b>MAX 8</b><small>ONLINE PLAYERS</small></span><span><b>SERVER</b><small>REQUIRED ONLINE</small></span></div></div>
+        <div className="floating-tag tag-weapon"><span className="tag-icon"><Crosshair size={17} /></span><span><b>Loadout ready</b><small>Five weapon classes</small></span></div><div className="floating-tag tag-squad"><span className="squad-avatars"><i><Shield size={11} /></i></span><span><b>Choose deployment</b><small>Practice or online queue</small></span></div>
       </div>
     </section>
-    <section className="ticker"><div><span>DROP</span><b>✳</b><span>LOOT</span><b>✳</b><span>MOVE WITH THE ZONE</span><b>✳</b><span>DON’T FIGHT ALONE</span><b>✳</b><span>DROP</span></div></section>
-    <section className="section wrap" id="features"><div className="section-heading"><div><div className="eyebrow">BUILT FOR THE LAST SQUAD STANDING</div><h2>Every run tells<br />a different story.</h2></div><p>Designed as an extensible college project: start with a playable practice arena, then add real server-hosted matches.</p></div>
-      <div className="feature-grid"><article className="feature-card feature-wide"><div className="feature-icon orange"><Crosshair /></div><span className="feature-index">01 / COMBAT</span><h3>Choose your fight.</h3><p>Five distinct weapon classes, headshot multipliers, health feedback, and a live elimination counter make every encounter count.</p><div className="weapon-strip">{weapons.map((weapon) => <span key={weapon.id}>{weapon.icon}</span>)}</div></article><article className="feature-card"><div className="feature-icon green"><Activity /></div><span className="feature-index">02 / THE ZONE</span><h3>Keep moving.</h3><p>The safe zone contracts as the match clock runs down. Stay outside too long and your health drains.</p><div className="mini-zone"><i /><i /><i /></div></article><article className="feature-card"><div className="feature-icon blue"><Zap /></div><span className="feature-index">03 / MOBILITY</span><h3>Take the wheel.</h3><p>Find the marked vehicle, get in, and drive across the arena at higher speed.</p><div className="mini-car">▰ <span>VEHICLE READY</span></div></article></div>
+    <section className="ticker" aria-label="Mission briefing"><div><span>DEPLOY</span><b>✳</b><span>HOLD THE LINE</span><b>✳</b><span>WATCH THE ZONE</span><b>✳</b><span>EXTRACT OR FALL</span><b>✳</b><span>DEPLOY</span></div></section>
+    <section className="section wrap" id="features"><div className="section-heading"><div><div className="eyebrow">BUILT FOR THE LAST SQUAD STANDING</div><h2>Every run tells<br />a different story.</h2></div><p>Drop into a solo practice run or connect to the game server for real-time multiplayer survival.</p></div>
+      <div className="feature-grid"><article className="feature-card feature-wide"><div className="feature-icon orange"><Crosshair /></div><span className="feature-index">01 / COMBAT</span><h3>Choose your fight.</h3><p>Switch between five loadouts in practice or online matches. Aim, fire, and track eliminations in the live HUD.</p><div className="weapon-strip">{weapons.map((weapon) => <span key={weapon.id} title={weapon.name}>{weapon.icon}</span>)}</div></article><article className="feature-card"><div className="feature-icon green"><Activity /></div><span className="feature-index">02 / THE ZONE</span><h3>Stay in bounds.</h3><p>The server controls the shrinking safe zone in online matches. Step outside and your health drains.</p><div className="mini-zone"><i /><i /><i /></div></article><article className="feature-card"><div className="feature-icon blue"><Zap /></div><span className="feature-index">03 / MOBILITY</span><h3>Change your pace.</h3><p>Try the vehicle toggle in solo practice to move faster across the training arena.</p><div className="mini-car">▰ <span>SOLO PRACTICE</span></div></article></div>
     </section>
-    <section className="cta-band"><div className="wrap cta-inner"><div><div className="eyebrow">YOUR DROP IS WAITING</div><h2>Ready to deploy?</h2><p>Jump into solo practice or create an account to try the multiplayer queue.</p></div><Link to="/arena" className="button button-primary">Launch game <ArrowRight size={18} /></Link></div></section>
+    <section className="cta-band"><div className="wrap cta-inner"><div><div className="eyebrow">YOUR DROP IS WAITING</div><h2>Ready to deploy?</h2><p>Enter solo practice now, or sign in to join the server-backed matchmaking queue.</p></div><Link to="/arena" className="button button-primary">Enter arena <ArrowRight size={18} /></Link></div></section>
     <Footer />
   </>;
 }
 
 function Footer() {
-  return <footer className="footer wrap"><Link className="brand" to="/"><span className="brand-mark">D</span><span>DOOMSDAY<small>Squad survival project</small></span></Link><p>College project prototype · Online play requires the game server.</p><span>© 2025 DOOMSDAY</span></footer>;
+  return <footer className="footer wrap"><Link className="brand" to="/"><span className="brand-mark">D</span><span>DOOMSDAY<small>Survive the collapse</small></span></Link><p>Solo practice available · Online matches require the game server.</p><span>COMMUNITY BUILD</span></footer>;
 }
 
 function Account() {
@@ -76,19 +77,19 @@ function Account() {
       setBusy(false);
     }
   }
-  if (user) return <main className="account-page"><div className="account-card"><div className="account-avatar">{user.username.slice(0, 1).toUpperCase()}</div><div className="eyebrow">PLAYER PROFILE</div><h1>Welcome back, {user.username}.</h1><p>Your player account is ready. Join matchmaking or continue practicing locally.</p><Link to="/arena" className="button button-primary">Go to arena <ArrowRight size={17} /></Link></div></main>;
-  return <main className="account-page"><form className="account-card" onSubmit={submit}><div className="eyebrow">PLAYER ACCESS</div><h1>{mode === 'login' ? 'Return to the fight.' : 'Create your callsign.'}</h1><p>{mode === 'login' ? 'Sign in to request an online match.' : 'Create a project account to enter the multiplayer queue.'}</p>
+  if (user) return <main className="account-page"><section className="account-card profile-card"><div className="account-avatar">{user.username.slice(0, 1).toUpperCase()}</div><div className="eyebrow">PLAYER PROFILE · VERIFIED SESSION</div><h1>Welcome back, {user.username}.</h1><p>Your account is ready. Join server-backed matchmaking or continue practicing locally without leaving the deployment zone.</p><Link to="/arena" className="button button-primary">Enter arena <ArrowRight size={17} /></Link></section></main>;
+  return <main className="account-page"><div className="account-layout"><section className="account-briefing"><Link className="briefing-return" to="/"><ArrowRight size={15} /> Return to overview</Link><span className="briefing-mark">D</span><div className="eyebrow">DOOMSDAY · PLAYER ACCESS</div><h1>{mode === 'login' ? 'Back into the fight.' : 'Join the survivors.'}</h1><p>{mode === 'login' ? 'Sign in to connect your callsign and enter the online queue.' : 'Create a callsign to join server-hosted matches with your squad.'}</p><div className="briefing-status"><span className="online-dot" /> SOLO PRACTICE DOES NOT REQUIRE AN ACCOUNT</div></section><form className="account-card" onSubmit={submit}><div className="eyebrow">SECURE PLAYER ACCESS</div><h2>{mode === 'login' ? 'Sign in' : 'Create account'}</h2><p className="account-intro">{mode === 'login' ? 'Enter your account credentials to continue.' : 'Your callsign will be visible to other players.'}</p>
     {mode === 'register' && <label>Callsign<input required minLength="2" maxLength="18" autoComplete="username" value={form.username} onChange={(event) => setForm({ ...form, username: event.target.value })} placeholder="e.g. NightRaven" /></label>}
     <label>Email address<input required type="email" autoComplete="email" value={form.email} onChange={(event) => setForm({ ...form, email: event.target.value })} placeholder="player@example.com" /></label>
-    <label>Password<input required minLength="10" type="password" autoComplete={mode === 'login' ? 'current-password' : 'new-password'} value={form.password} onChange={(event) => setForm({ ...form, password: event.target.value })} placeholder="At least 10 characters" /></label>
+    <label>Password<input required minLength="10" maxLength="128" type="password" autoComplete={mode === 'login' ? 'current-password' : 'new-password'} value={form.password} onChange={(event) => setForm({ ...form, password: event.target.value })} placeholder="At least 10 characters" /></label>
     {error && <div className="form-error" role="alert">{error}</div>}
-    <button className="button button-primary button-full" disabled={busy}>{busy ? 'Please wait…' : mode === 'login' ? 'Sign in' : 'Create account'} <ArrowRight size={17} /></button>
-    <p className="form-switch">{mode === 'login' ? 'New player?' : 'Already registered?'} <button type="button" onClick={() => { setMode(mode === 'login' ? 'register' : 'login'); setError(''); }}> {mode === 'login' ? 'Create account' : 'Sign in'}</button></p>
-    <p className="form-note">Accounts are stored by the configured Node/MongoDB backend. This is a project prototype—not a production identity provider.</p>
-  </form></main>;
+    <button className="button button-primary button-full" disabled={busy} aria-busy={busy}>{busy ? <><span className="loading-spinner" aria-hidden="true" /> Connecting securely…</> : <>{mode === 'login' ? 'Sign in' : 'Create account'} <ArrowRight size={17} /></>}</button>
+    <p className="form-switch">{mode === 'login' ? 'New to Doomsday?' : 'Already have a callsign?'} <button type="button" aria-pressed={mode === 'register'} onClick={() => { setMode(mode === 'login' ? 'register' : 'login'); setError(''); }}> {mode === 'login' ? 'Create account' : 'Sign in'}</button></p>
+    <p className="form-note">Accounts are managed by the configured Node/MongoDB backend. Authentication tokens remain in this browser session.</p>
+  </form></div></main>;
 }
 
-function GameArena({ mode, socket, room, onStatus }) {
+function GameArena({ mode, socket, room, onFindMatch }) {
   const canvasRef = useRef(null);
   const [weapon, setWeapon] = useState('awm');
   const [stats, setStats] = useState({ health: 100, score: 0, elapsed: 0, vehicle: false });
@@ -193,7 +194,7 @@ function GameArena({ mode, socket, room, onStatus }) {
         if (ownPlayer && mouse.down) player.angle = Math.atan2(mouse.y - ownPlayer.y * (height / 760), mouse.x - ownPlayer.x * (width / 1200));
         socket.emit('player:input', { up:input.has('w')||input.has('arrowup'), down:input.has('s')||input.has('arrowdown'), left:input.has('a')||input.has('arrowleft'), right:input.has('d')||input.has('arrowright'), angle:player.angle });
       }
-      if (socket?.connected && mode === 'online' && input.has(' ')) socket.emit('player:fire');
+      if (socket?.connected && mode === 'online' && (input.has(' ') || mouse.down)) socket.emit('player:fire');
       frameId = requestAnimationFrame(animate);
     }
     frameId = requestAnimationFrame(animate);
@@ -205,8 +206,42 @@ function GameArena({ mode, socket, room, onStatus }) {
       cancelAnimationFrame(frameId); window.removeEventListener('keydown',keyDown);window.removeEventListener('keyup',keyUp);window.removeEventListener('resize',scale);canvas.removeEventListener('pointermove',pointerMove);canvas.removeEventListener('pointerdown',pointerDown);window.removeEventListener('pointerup',pointerUp);
     };
   }, [mode, socket, runKey]);
-  return <div className="arena-shell"><div className="arena-canvas-wrap"><canvas ref={canvasRef} className="arena-canvas" aria-label="Playable tactical arena" /><div className="arena-notice">{notice}</div><div className="canvas-compass">N <span>·</span> TRAINING ISLAND</div></div>
-    <aside className="game-hud"><div className="hud-top"><span className="eyebrow">{mode === 'online' ? 'LIVE MATCH' : 'SOLO PRACTICE'}</span><span className="live-pill"><i />{mode === 'online' ? 'CONNECTED' : 'LOCAL'}</span></div><div className="hud-stat"><span>HEALTH</span><b>{stats.health}%</b></div><div className="health-track"><i style={{ width: `${stats.health}%` }} /></div><div className="hud-grid">        <div><small>ELIMS</small><b>{stats.score}</b></div><div><small>ZONE CLOSES</small><b>{String(Math.floor(Math.max(0,160-stats.elapsed)/60)).padStart(2,'0')}:{String(Math.max(0,160-stats.elapsed)%60).padStart(2,'0')}</b></div></div><label className="field-label" htmlFor="weapon">WEAPON LOADOUT</label><select id="weapon" value={weapon} onChange={(event)=>setWeapon(event.target.value)}>{weapons.map((item)=><option key={item.id} value={item.id}>{item.name} · {item.kind}</option>)}</select><div className="weapon-description">{weapons.find((item)=>item.id===weapon)?.damage} <span> · 1 of 5 loadouts</span></div><button className={stats.vehicle?'button button-primary button-full':'button button-outline button-full'} onClick={()=>{vehicleRef.current=!vehicleRef.current;setStats((prev)=>({...prev,vehicle:vehicleRef.current}));setNotice(vehicleRef.current?'Vehicle engaged — drive with WASD / arrow keys':'On foot — stay inside the safe zone');}}>{stats.vehicle?'Exit vehicle':'Enter vehicle'}</button>{isDead && <button className="button button-primary button-full" onClick={restartRun}>Restart run</button>}<div className="controls-note"><b>CONTROLS</b><span>W A S D <i>Move</i></span><span>Mouse <i>Aim & fire</i></span><span>Space <i>Auto-fire</i></span><span>Zone <i>Contracts over time</i></span></div>{mode==='online'&&<div className="room-info"><Users size={15}/>{room?.players?.length || 0} players in your room</div>}<p className="prototype-note">Prototype mode: gameplay is for demonstration. Online matches need the server connected and hosted.</p></aside></div>;
+  const ownPlayer = room?.players?.find((player) => player.id === socket?.id);
+  const zoneStatus = ownPlayer ? (ownPlayer.outsideZone ? 'Outside safe zone' : 'Inside safe zone') : 'Waiting for match';
+  return <div className="arena-shell">
+    <div className="arena-canvas-wrap">
+      <canvas ref={canvasRef} className="arena-canvas" aria-label="Playable tactical arena" />
+      <div className="arena-notice">{mode === 'online' ? `${room?.status === 'playing' ? 'LIVE MATCH' : room?.status === 'finished' ? 'MATCH FINISHED' : 'LOBBY'} · ${room?.aliveCount ?? 0} ALIVE` : notice}</div>
+      <div className="canvas-compass">N <span>·</span> TRAINING ISLAND</div>
+      {room?.status === 'finished' && <section className="match-result" role="status" aria-live="polite">
+        <span className="eyebrow">DOOMSDAY · MATCH RESULTS</span>
+        <h2>{room.result?.winner ? `${room.result.winner.username} wins` : 'No survivors'}</h2>
+        <p>{room.result?.winner?.id === socket?.id ? 'You are the last survivor.' : room.result?.winner ? 'The last survivor takes the round.' : 'The round ended without a survivor.'}</p>
+        <ol>{room.result?.standings?.map((player) => <li key={player.id}><span>#{player.place} · {player.username}</span><span>{player.eliminations} elims</span></li>)}</ol>
+      </section>}
+    </div>
+    <aside className="game-hud">
+      <div className="hud-top"><span className="eyebrow">{mode === 'online' ? room?.status === 'waiting' ? 'MATCH LOBBY' : room?.status === 'finished' ? 'RESULTS' : 'LIVE MATCH' : 'SOLO PRACTICE'}</span><span className={`live-pill ${mode === 'online' ? socket?.connected ? 'live-pill-connected' : 'live-pill-reconnecting' : 'live-pill-local'}`}><i />{mode === 'online' ? socket?.connected ? 'CONNECTED' : connecting ? 'CONNECTING' : 'RECONNECTING' : 'LOCAL'}</span></div>
+      {mode === 'online' && <section className="online-lobby" aria-live="polite" aria-label="Live match lobby">
+        <div className="lobby-status"><b>{room?.status === 'playing' ? 'Match in progress' : room?.status === 'finished' ? 'Round complete' : connecting ? 'Connecting to the arena…' : room ? 'Waiting for players' : 'Joining matchmaking…'}</b><span>{room ? `${room.playerCount}/${8} players · ${room.status === 'waiting' ? `${room.minimumPlayers} needed to start` : `${room.aliveCount} alive`}` : status}</span></div>
+        {room && <ul className="lobby-roster">{room.players.map((player) => <li key={player.id}><span><i className={player.alive ? 'roster-dot' : 'roster-dot eliminated'} />{player.username}{player.id === socket?.id ? ' (you)' : ''}</span><b>{player.alive ? `${Math.ceil(player.health)} HP` : 'OUT'}</b></li>)}</ul>}
+        {room?.status === 'finished' && <button className="button button-primary button-full" onClick={() => { if (socket) onFindMatch(socket); }}>Find another match</button>}
+        {!room && socket?.connected && !connecting && <button className="button button-outline button-full" onClick={() => { setError(''); setConnecting(true); socket.emit('match:find'); }}>Try matchmaking again</button>}
+      </section>}
+      <div className="hud-stat"><span>HEALTH</span><b>{mode === 'online' ? ownPlayer ? `${Math.ceil(ownPlayer.health)}%` : '—' : `${stats.health}%`}</b></div>
+      <div className="health-track"><i style={{ width: `${mode === 'online' ? ownPlayer?.health ?? 0 : stats.health}%` }} /></div>
+      <div className="hud-grid"><div><small>{mode === 'online' ? 'ELIMINATIONS' : 'ELIMS'}</small><b>{mode === 'online' ? ownPlayer?.eliminations ?? 0 : stats.score}</b></div><div><small>{mode === 'online' ? 'PLAYERS ALIVE' : 'ZONE CLOSES'}</small><b>{mode === 'online' ? room?.aliveCount ?? 0 : `${String(Math.floor(Math.max(0,160-stats.elapsed)/60)).padStart(2,'0')}:${String(Math.max(0,160-stats.elapsed)%60).padStart(2,'0')}`}</b></div></div>
+      {mode === 'online' && <div className={ownPlayer?.outsideZone ? 'room-info zone-warning' : 'room-info'}><Shield size={15}/>{zoneStatus}{room?.status === 'playing' && room.elapsedSeconds >= 20 ? ' · shrinking' : ''}</div>}
+      <label className="field-label" htmlFor="weapon">WEAPON LOADOUT</label>
+      <select id="weapon" value={weapon} onChange={(event)=>setWeapon(event.target.value)} disabled={mode === 'online' && room?.status !== 'playing'}>{weapons.map((item)=><option key={item.id} value={item.id}>{item.name} · {item.kind}</option>)}</select>
+      <div className="weapon-description">{weapons.find((item)=>item.id===weapon)?.damage} <span> · 1 of 5 loadouts</span></div>
+      {mode === 'practice' && <button className={stats.vehicle?'button button-primary button-full':'button button-outline button-full'} onClick={()=>{vehicleRef.current=!vehicleRef.current;setStats((prev)=>({...prev,vehicle:vehicleRef.current}));setNotice(vehicleRef.current?'Vehicle engaged — drive with WASD / arrow keys':'On foot — stay inside the safe zone');}}>{stats.vehicle?'Exit vehicle':'Enter vehicle'}</button>}
+      {isDead && <button className="button button-primary button-full" onClick={restartRun}>Restart run</button>}
+      <div className="controls-note"><b>CONTROLS</b><span>W A S D <i>Move</i></span><span>Mouse <i>Aim & fire</i></span><span>Space <i>Auto-fire</i></span><span>Zone <i>Contracts over time</i></span></div>
+      {mode==='online' && <div className="room-info"><Users size={15}/>{room?.playerCount ?? 0} players in your room</div>}
+      <p className="prototype-note">Prototype mode: gameplay is for demonstration. Online matches need the server connected and hosted.</p>
+    </aside>
+  </div>;
 }
 
 function Arena() {
@@ -218,25 +253,59 @@ function Arena() {
   const [connecting, setConnecting] = useState(false);
   const [error, setError] = useState('');
   useEffect(() => () => socket?.disconnect(), [socket]);
+  useEffect(() => {
+    if (!user && socket) leaveOnline();
+  }, [user, socket]);
+  function requestMatch(connection) {
+    setError('');
+    setRoom(null);
+    setMode('online');
+    setConnecting(true);
+    setStatus('Joining matchmaking…');
+    connection.emit('match:find');
+  }
   async function joinOnline() {
     if (!user) { setError('Sign in or create a player account before joining online matchmaking.'); return; }
     setConnecting(true); setError(''); setStatus('Connecting to the game server…');
     try {
       await apiRequest('/api/v1/health');
       const connection = io('/', { auth: { token: localStorage.getItem('doomsday-token') }, transports: ['websocket','polling'] });
-      connection.on('connect', () => { connection.emit('match:find'); setStatus('Searching for a match…'); });
-      connection.on('match:joined', (payload) => { setRoom(payload.room); setMode('online'); setStatus('Match found · survive the zone'); setConnecting(false); });
+      connection.on('connect', () => requestMatch(connection));
+      connection.on('disconnect', (reason) => {
+        if (reason === 'io client disconnect') return;
+        setRoom(null);
+        if (reason === 'io server disconnect') {
+          setConnecting(false);
+          setError('This player account was disconnected from the server. Return to solo and reconnect.');
+          return;
+        }
+        setConnecting(true);
+        setStatus('Connection lost · reconnecting to matchmaking…');
+      });
+      connection.io.on('reconnect_attempt', (attempt) => {
+        setConnecting(true);
+        setStatus(`Reconnecting to the arena · attempt ${attempt}…`);
+      });
+      connection.on('match:joined', (payload) => { setRoom(payload.room); setMode('online'); setStatus(payload.room.status === 'waiting' ? 'Waiting for more players…' : 'Match found · survive the zone'); setConnecting(false); });
       connection.on('match:state', (state) => setRoom(state));
       connection.on('match:error', (payload) => { setError(payload.message); setConnecting(false); });
-      connection.on('connect_error', (reason) => { setError(reason.message || 'Could not connect to the game server.'); setConnecting(false); });
+      connection.on('connect_error', (reason) => {
+        if (!connection.active) {
+          setError(reason.message || 'Could not connect to the game server.');
+          setConnecting(false);
+          return;
+        }
+        setConnecting(true);
+        setStatus('Could not connect · retrying the game server…');
+      });
       setSocket(connection);
     } catch (requestError) { setError(`${requestError.message} Start the backend server and MongoDB, then try again.`); setConnecting(false); }
   }
-  function leaveOnline() { socket?.emit('match:leave'); socket?.disconnect(); setSocket(null); setRoom(null); setMode('practice'); setStatus(''); }
-  return <main className="game-page wrap"><div className="game-page-heading"><div><div className="eyebrow">DOOMSDAY · TRAINING ISLAND</div><h1>Battle arena</h1><p>Choose a mode and get ready to deploy. The practice arena works locally in your browser.</p></div><Link to="/" className="back-link">← Back to briefing</Link></div><div className="mode-row"><button className={mode==='practice'?'mode-button selected':'mode-button'} onClick={()=>{if(mode==='online')leaveOnline();else setMode('practice');}}><Gamepad2 size={17}/> Solo practice <span>Available now</span></button><button className={mode==='online'?'mode-button selected':'mode-button'} disabled={connecting||mode==='online'} onClick={joinOnline}><Users size={17}/> Online matchmaking <span>{connecting?'Connecting…':user?'Requires server':'Sign in required'}</span></button>{mode==='online'&&<button className="leave-match" onClick={leaveOnline}>Leave match</button>}</div>{(error||status)&&<div className={error?'notice notice-error':'notice'}>{error||status}{error&&<button onClick={()=>setError('')} aria-label="Dismiss"><X size={15}/></button>}</div>}<GameArena mode={mode} socket={socket} room={room} onStatus={setStatus}/><Footer /></main>;
+  function leaveOnline() { socket?.emit('match:leave'); socket?.disconnect(); setSocket(null); setRoom(null); setMode('practice'); setConnecting(false); setStatus(''); }
+  return <main className="game-page wrap"><div className="game-page-heading"><div><div className="eyebrow">DOOMSDAY · TRAINING ISLAND</div><h1>Battle arena</h1><p>Choose a mode and get ready to deploy. The practice arena works locally in your browser.</p></div><Link to="/" className="back-link">← Back to briefing</Link></div><div className="mode-row"><button className={mode==='practice'?'mode-button selected':'mode-button'} onClick={()=>{if(mode==='online')leaveOnline();else setMode('practice');}}><Gamepad2 size={17}/> Solo practice <span>Available now</span></button><button className={mode==='online'?'mode-button selected':'mode-button'} disabled={connecting||mode==='online'} onClick={joinOnline}><Users size={17}/> Online matchmaking <span>{connecting?'Connecting…':user?'Requires server':'Sign in required'}</span></button>{mode==='online'&&<button className="leave-match" onClick={leaveOnline}>Return to solo</button>}</div>{(error||status)&&<div className={error?'notice notice-error':'notice'} role={error?'alert':'status'}>{error||status}{error&&<button onClick={()=>setError('')} aria-label="Dismiss"><X size={15}/></button>}</div>}<GameArena mode={mode} socket={socket} room={room} onFindMatch={requestMatch}/><Footer /></main>;
 }
 
-function NotFound() { return <main className="account-page"><div className="account-card"><div className="eyebrow">404 · LOST IN THE ZONE</div><h1>Nothing here.</h1><p>This page fell outside the safe area.</p><Link className="button button-primary" to="/">Return to base</Link></div></main>; }
+function NotFound() { return <main className="account-page"><section className="account-card not-found-card"><span className="briefing-mark" aria-hidden="true">D</span><div className="eyebrow">404 · SIGNAL LOST</div><h1>Outside the zone.</h1><p>This route is not part of the current deployment. Return to the overview to regroup.</p><Link className="button button-primary" to="/">Return to overview <ArrowRight size={17} /></Link></section></main>; }
 
 export default function App() {
   return <><Header /><Routes><Route path="/" element={<Home />} /><Route path="/arena" element={<Arena />} /><Route path="/account" element={<Account />} /><Route path="*" element={<NotFound />} /></Routes></>;
